@@ -1,9 +1,10 @@
-1) Tweaked the healthcare dataset generator to focus on ONE hospital instead of many nationwide. Assigned patient zipcodes according to distance from hospital, weighted for locality. 
+1) Tweaked the healthcare dataset generator functionality to include a focus on ONE hospital instead of many nationwide. Assigned patient zipcodes according to distance from hospital, weighted for locality. 
 2)
 3)
 
  Generated dataset for a regional hospital with 59K patients with 485 distinct patient zipcodes over the past 3 years.
-
+ 
+```
 python healthcare_dataset_generator_local_skew.py ^
   --patients 1000 ^
   --today 2026-02-24 ^
@@ -12,18 +13,41 @@ python healthcare_dataset_generator_local_skew.py ^
   --hospital-state NY ^
   --single-hospital ^
   --local-share 0.83
+```
 
 2) 
 
 
-run with locality
-python healthcare_dataset_generator_local_skew.py --patients 20000 --today 2026-02-24 --zip-target 485 --zip-pool-file ".\us_zip_pool_10k_with_state.csv" --outdir ".\Dataset" --single-hospital --hospital-state NY --hospital-zipcode 10019 --hospital-name "NY Regional Medical Center" --local-share 0.83 --local-top-n 400 --local-decay 200 --outstate-neighbor-share 0.70
+run with locality - One hospital, local patient zipcodes
+```
+python healthcare_dataset_generator_local_skew.py ^
+  --patients 20000 ^
+  --today 2026-02-24 ^
+  --zip-pool-file ".\us_zip_pool_10k_with_state.csv" ^
+  --outdir ".\Dataset" ^
+  --hospital-state NY ^
+  --single-hospital ^
+  --local-share 0.83
+```
 
 
 
-run without locality
-python healthcare_dataset_generator_local_skew.py --patients 20000 --today 2026-02-24 --zip-target 485 --zip-pool-file ".\us_zip_pool_10k_with_state.csv" --outdir ".\Dataset" --single-hospital --hospital-state NY --local-share 0.83 --local-top-n 400 --local-decay 200 --outstate-neighbor-share 0.70
+run without locality - Multiple hospitals, nationwide patient zipcodes
 
+```
+python healthcare_dataset_generator_local_skew.py 
+--patients 20000
+--today 2026-02-24
+--zip-target 485
+--zip-pool-file ".\us_zip_pool_10k_with_state.csv"
+--outdir ".\Dataset"
+--single-hospital
+--hospital-state NY
+--local-share 0.83
+--local-top-n 400
+--local-decay 200
+--outstate-neighbor-share 0.70
+```
 
 
 
@@ -82,3 +106,17 @@ Typical range: 100 to 600.
 - outstate-neighbor-share:
 When assigning out-of-state patients, this is the fraction pulled from “neighboring states” (more realistic) versus anywhere else.
 Higher value = out-of-state patients mostly from nearby states (NJ, CT, PA, MA, etc).
+
+
+EXAMPLES
+Smaller community hospital feel
+--patients 20000
+--local-share 0.90
+--local-top-n 150 to 250
+--local-decay 120 to 200
+
+Large regional / academic feel
+--patients 50000
+--local-share 0.80 to 0.85
+--local-top-n 400 to 800
+--local-decay 200 to 450
