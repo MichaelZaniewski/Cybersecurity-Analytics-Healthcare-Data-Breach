@@ -26,7 +26,6 @@ python healthcare_dataset_generator_local_skew.py --patients 65000 --today 2026-
 ```
 
 
-
 run without locality - Multiple hospitals, nationwide patient zipcodes
 
 ```
