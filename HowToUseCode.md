@@ -1,5 +1,6 @@
 1) Tweaked the healthcare dataset generator functionality to include a focus on ONE hospital instead of many nationwide. Assigned patient zipcodes according to distance from hospital, weighted for locality. 
 
+
 Generated patient for a regional hospital with 50K unique patients weighted for patients near the hypothetical NYC hospital location over the past 5 years.
  
 ```
@@ -17,7 +18,7 @@ python healthcare_dataset_generator_local_skew.py
 --outstate-neighbor-share 0.80
 ```
 
-2) 
+
 
 
 run with locality - One hospital, local patient zipcodes
