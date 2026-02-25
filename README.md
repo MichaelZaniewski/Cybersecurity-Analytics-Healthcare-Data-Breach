@@ -8,6 +8,23 @@ Simulate a healthcare claims data breach from a synthetic dataset, then analyze 
 
 ## Dataset Generator and Structure Overview
 
+
+| column name                   | data type           | column name                 | data type           |
+| ----------------------------- | ------------------- | --------------------------- | ------------------- |
+| billing_id                    | integer             | visit_id                    | integer             |
+| patient_id                    | integer             | billing_date                | date                |
+| insurance_coverage_amount     | numeric(10,2)        | patient_responsibility_amount | numeric(10,2)     |
+| payment_plan                  | character varying   | expected_payment_date       | date                |
+| actual_payment_date           | date                | payment_status              | character varying   |
+| total_charge                  | numeric(10,2)        | name                        | character varying   |
+| date_of_birth                 | date                | address                     | character varying   |
+| city                          | character varying   | state                       | character varying(2)|
+| zipcode                       | character varying(5)| insurance_provider          | character varying   |
+| insurance_policy_number       | character varying   | phone_number                | character varying   |
+| SSN_full                      | character varying   | SSN_last4                   | character varying   |
+| card_brand                    | character varying   | card_num                    | character varying   |
+| CVV                           | character varying(3)| exp_date                    | character varying   |
+
 ### Generator Logic
 
 
