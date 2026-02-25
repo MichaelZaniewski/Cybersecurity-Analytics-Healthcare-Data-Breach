@@ -20,14 +20,7 @@ python healthcare_dataset_generator_local_skew.py ^
 
 run with locality - One hospital, local patient zipcodes
 ```
-python healthcare_dataset_generator_local_skew.py ^
-  --patients 20000 ^
-  --today 2026-02-24 ^
-  --zip-pool-file ".\us_zip_pool_10k_with_state.csv" ^
-  --outdir ".\Dataset" ^
-  --hospital-state NY ^
-  --single-hospital ^
-  --local-share 0.83
+python healthcare_dataset_generator_local_skew.py --patients 65000 --today 2026-02-24 --zip-pool-file ".\us_zip_pool_10k_with_state.csv" --outdir ".\Dataset" --single-hospital --hospital-state NY --hospital-zipcode 10036 --local-share 0.83 --local-top-n 400 --local-decay 200 --outstate-neighbor-share 0.00
 ```
 
 
@@ -35,18 +28,7 @@ python healthcare_dataset_generator_local_skew.py ^
 run without locality - Multiple hospitals, nationwide patient zipcodes
 
 ```
-python healthcare_dataset_generator_local_skew.py 
---patients 20000
---today 2026-02-24
---zip-target 485
---zip-pool-file ".\us_zip_pool_10k_with_state.csv"
---outdir ".\Dataset"
---single-hospital
---hospital-state NY
---local-share 0.83
---local-top-n 400
---local-decay 200
---outstate-neighbor-share 0.70
+python healthcare_dataset_generator_local_skew.py --patients 50325 --today 2026-02-24 --zip-target 5800 --zip-pool-file ".\us_zip_pool_10k_with_state.csv" --outdir ".\Dataset"
 ```
 
 
