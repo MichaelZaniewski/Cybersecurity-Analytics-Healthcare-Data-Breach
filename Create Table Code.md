@@ -31,13 +31,13 @@ CREATE TABLE public.claims_export (
   insurance_policy_number      VARCHAR(60),
   phone_number                 VARCHAR(25),
 
-  SSN_full                     CHAR(11),   -- 123-45-6789
-  SSN_last4                    CHAR(11),   -- ***-**-6789
+  ssn_full                     CHAR(11),   -- 123-45-6789
+  ssn_last4                    CHAR(11),   -- ***-**-6789
 
   card_brand                   VARCHAR(20),
   card_number                  CHAR(19),   -- ####-####-####-####
 
-  CVV                          CHAR(3),    -- 3 digits
+  cvv                          CHAR(3),    -- 3 digits
   exp_date                     CHAR(7)     -- MM/YY
 );
 ```
