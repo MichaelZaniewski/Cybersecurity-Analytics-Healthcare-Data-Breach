@@ -1,4 +1,4 @@
-# Python Dataset Generation
+# Python Dataset Generation Information
 
 ## Foundational Generation 
 This project utilizes version 2.0 of my [Healthcare Dataset Generator](https://github.com/MichaelZaniewski/Healthcare-Dataset-Generator/tree/main).
