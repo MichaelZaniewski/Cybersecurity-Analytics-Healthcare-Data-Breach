@@ -38,7 +38,7 @@ CREATE TABLE public.claims_export (
   card_number                  CHAR(19),   -- ####-####-####-####
 
   CVV                          CHAR(3),    -- 3 digits
-  exp_date                     CHAR(5)     -- MM/YY
+  exp_date                     CHAR(7)     -- MM/YY
 );
 
 CREATE INDEX idx_claims_export_visit_id      ON public.claims_export (visit_id);
