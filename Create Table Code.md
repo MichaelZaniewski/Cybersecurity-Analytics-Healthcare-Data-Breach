@@ -1,9 +1,7 @@
--- PostgreSQL
+# Create Table Code
 
 
 ```
--- PostgreSQL
-
 CREATE TABLE public.claims (
   billing_id                   INTEGER PRIMARY KEY,
   visit_id                     INTEGER NOT NULL,
