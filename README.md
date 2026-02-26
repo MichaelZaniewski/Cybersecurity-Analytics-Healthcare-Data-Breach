@@ -20,7 +20,7 @@ The scope of this project is one hypothetical NYC-based hospital with 50,000 pat
 ## Dataset Generator and Structure Overview
 
 ### Generator Logic
-This project utilizes version 2.0 of my [Healthcare Dataset Generator](https://github.com/MichaelZaniewski/Healthcare-Dataset-Generator/tree/main) that programmatically creates realistic, U.S.-based healthcare data that mirrors hospital operations with **no real or sensitive data**. That data was further augmented by joining the `billing` and `patient` tables, generating additional PII (SSNs, credit card info), and randomly nulling records with an additional python script that can be found [here](https://github.com/MichaelZaniewski/Cybersecurity-Analytics-Healthcare-Data-Breach/blob/main/Dataset%20Generation%20Information.md#additional-pii-generation-script). The culimnation of these steps produced the final dataset to be analyzed, which can be found [here](https://github.com/MichaelZaniewski/Cybersecurity-Analytics-Healthcare-Data-Breach/blob/main/Dataset.zip) 
+This project utilizes version 2.0 of my [Healthcare Dataset Generator](https://github.com/MichaelZaniewski/Healthcare-Dataset-Generator/tree/main) that programmatically creates realistic, U.S.-based healthcare data that mirrors hospital operations with **no real or sensitive data**. That data was further augmented by joining the `billing` and `patient` tables, generating additional PII (SSNs, credit card info), and randomly nulling records with an additional python script that can be found [here](https://github.com/MichaelZaniewski/Cybersecurity-Analytics-Healthcare-Data-Breach/blob/main/Dataset%20Generation%20Information.md#additional-pii-generation-script). The culimnation of these steps produced the final dataset to be analyzed, which can be found [here].(https://github.com/MichaelZaniewski/Cybersecurity-Analytics-Healthcare-Data-Breach/blob/main/Dataset.zip) 
 
 ### Data Structure and Type
 | column name                   | data type           | column name                 | data type           |
@@ -35,25 +35,27 @@ This project utilizes version 2.0 of my [Healthcare Dataset Generator](https://g
 | city                          | character varying   | state                       | character varying(2)|
 | zipcode                       | character varying(5)| insurance_provider          | character varying   |
 | insurance_policy_number       | character varying   | phone_number                | character varying   |
-| SSN_full                      | character varying   | SSN_last4                   | character varying   |
+| ssn_full                      | character varying   | ssn_last4                   | character varying   |
 | card_brand                    | character varying   | card_number                 | character varying   |
-| CVV                           | character varying(3)| exp_date                    | character varying   |
+| cvv                           | character varying(3)| exp_date                    | character varying   |
 
 
 
 
 ## Executive Summary
-### Glossary
-
 ### Overview of Findings
 
 ### Findings
 
 ## Recommendations
 
+
+
+
 ### EXTRA CATEGORY WRAP-UP
 
 #### CATEGORY Explanation
+
 
 
 ## Assumptions, Limitations, and Caveats
@@ -62,3 +64,15 @@ This project utilizes version 2.0 of my [Healthcare Dataset Generator](https://g
 ### Limitations
 - Synthetic data, despite realistic rules, may not capture true clinical variation like seasonal spikes. Real‑world behavior (patients, providers, payers) can differ.
 ### Caveats
+
+
+## Glossary
+- **Claims (insurance claims data):** Records used to request and process payment from an insurer for healthcare services. Typically includes patient identifiers, dates of service, provider/facility info, charges, amounts paid, and claim status.
+- **Revenue Cycle (Revenue Cycle Management, RCM):** The end-to-end process of capturing patient/insurance info, billing, submitting claims, receiving payments/denials, and collecting any remaining patient balance.
+- **Personally Identifiable Information (PII):** Data that can identify a specific person on its own or when combined with other fields. Examples: name, address, date of birth, SSN, government ID.
+- **Protected Health Information (PHI):** Health-related information tied to an individual and created/used for care or payment. Examples: treatments, insurance policy numbers, test results.
+- **Breach Notification:** The process of notifying affected individuals after exposure of sensitive data including what was exposed, how many people were affected, and applicable guidelines.
+- **Notification Readiness:** How actionable the leaked records are for contacting affected individuals. High readiness means at least one reliable contact path (name, full address + PII). Low readiness means missing or conflicting contact fields.
+- **Exposure:** A field or record being present in the leaked dataset
+- **Co-exposure:** Two or more sensitive fields being exposed together in the same record (example: name + DOB + policy number).
+- **Risk Tier:** A severity bucket used to classify records or individuals based on exposure (low, medium, high).
