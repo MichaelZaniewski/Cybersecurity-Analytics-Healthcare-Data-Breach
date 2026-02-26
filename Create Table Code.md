@@ -40,8 +40,4 @@ CREATE TABLE public.claims_export (
   CVV                          CHAR(3),    -- 3 digits
   exp_date                     CHAR(7)     -- MM/YY
 );
-
-CREATE INDEX idx_claims_export_visit_id      ON public.claims_export (visit_id);
-CREATE INDEX idx_claims_export_patient_id    ON public.claims_export (patient_id);
-CREATE INDEX idx_claims_export_billing_date  ON public.claims_export (billing_date);
 ```
