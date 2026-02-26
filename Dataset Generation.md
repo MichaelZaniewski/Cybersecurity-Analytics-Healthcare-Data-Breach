@@ -1,22 +1,25 @@
-# Python Additional PII Generation
+# Python Dataset Generation
+
+## Foundational Generation 
+This project utilizes version 2.0 of my [Healthcare Dataset Generator](https://github.com/MichaelZaniewski/Healthcare-Dataset-Generator/tree/main).
+
+The generator programmatically creates realistic, U.S.-based healthcare data that mirrors hospital operations with **no real or sensitive data**
+
+## Expanded Creation
+### The Goal
+This projects dataset is designed to simulate an **insurance claims and revenue-cycle export breach**, which is one of the most common versions of healthcare leaks. In real incidents, attackers often obtain a claims-related file pulled for billing or clearinghouse workflows. That export typically contains enough identity and coverage detail to match patients to payers (names, demographics, addresses, insurance provider, policy numbers, billing dates, charges, balances). 
+
+### The Execution
+This project models that breach artifact directly. Rather than treating the breach as a clean database dump, I simulated a realistic claims export by joining the `billing` and `patients` tables into a single “claims-style” dataset. I then generated additional synthetic PII fields to reflect what often exists in revenue-cycle workflows, and applied controlled nulling to mimic partial exposure. The result is a dataset where each record is incomplete in different ways (some rows contain coverage and billing amounts but limited identity fields, others include contact fields but missing insurance details), which better mirrors how real breach exports look and how breach response teams have to assess impact.
 
 
+## Additional PII Generation Script
 
-
-
+After creating the claims_export table, this script was ran against the dataset to add increased PII severity and realism through partial/missing data. 
 
 ```
-
 """
 Input: claims_export.csv (expects columns: billing_id, patient_id)
-
-Output:
-  - claims_export_enriched.csv: original columns + SSN_full, SSN_last4, card_brand, card_number, CVV, exp_date
-
-Rules enforced:
-  - One patient_id => one stable SSN_full profile (repeats consistent).
-  - One patient_id => one stable card_number + CVV + exp_date profile (repeats consistent).
-  - SSN_full present for 20% of unique patients..
 """
 
 from __future__ import annotations
