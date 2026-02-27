@@ -2,9 +2,10 @@
 
 ### 1) What percentage of breached records included highly sensitive fields like Social Security Numbers or financial data?
 ![Q1](https://github.com/user-attachments/assets/aaecad39-b7fc-4e64-a0d0-e6e030c71ee9)
-- TECHNICAL POINT:
-- SOME BACKGROUND: Sensitive fields considered were ssn_full, card_number (with cvv and exp_date), and insurance_policy_number.
 - EXPLANATION OF CHART: Insurance policy numbers were present in 36.61% of all records with financial info closely behind at 35.97%. Full social security numbers leaked at a 17.86% rate.
+- TECHNICAL POINT:
+- SOME BACKGROUND: Sensitive fields considered were `ssn_full`, `card_number` (with `cvv` and `exp_date)`, and `insurance_policy_number`.
+
 ```
 SELECT COUNT(*) AS total_records,
 		TO_CHAR(ROUND(100*(COUNT(*) FILTER(WHERE ssn_full <> '') / COUNT(*)::numeric),2),'999D99%') AS has_full_ssn,
@@ -15,8 +16,8 @@ FROM claims
 
 ### 2) How many affected individuals have enough exposed information to pose a serious identity theft risk vs low risk exposure vs no exposure
 ![Q3](https://github.com/user-attachments/assets/a432a1fe-9888-4a77-9b03-66855e2487df)
-- TECHNICAL POINT: Created risk buckets using case function and counted distinct patient IDs when their records met certain risk criteria.
 - EXPLANATION OF CHART: A significant amount of patients at nearly 44K out of 50K have enough information across all their leaked records to consistitute a serious threat of identity theft or fraud. Almost 5K patients had enough exposed to warrant a slight risk while only 1K experienced no real threat risk.
+- TECHNICAL POINT: Created risk buckets using case function and counted distinct patient IDs when their records met certain risk criteria.
 
 Risk was determined as the presence of any one of the following: 
 - High-risk: `ssn_full`, `card_number`, `insurance_policy_number`+`name`
@@ -54,6 +55,9 @@ ORDER BY count DESC
 
 ### 3) What proportion of records are incomplete to the point where patient notification would be difficult?
 ![Q5](https://github.com/user-attachments/assets/8855d402-a01e-420d-806c-737f0685b0f3)
+- The majority of patients, 44,077, have enough data present in the breach to be considered easily contactable. 5923 patients have incomplete records enough to be difficult to contact.
+- Notification criteria: Only name + address were considered to be reliable contact methods. Phone numbers and emails were not considered because notification would be delivered via postal mail.
+
 ```
 SELECT 
 	CASE address_flag 
@@ -75,7 +79,6 @@ FROM
 ```
 
 ### 4) Are there patterns in the types of data that are more likely to be missing?
-
 #### Step 1: Which type of data is more likely to be missing?
 ![Q4a](https://github.com/user-attachments/assets/e71e3f2b-f9ed-41c8-b0a3-56f5a1a87a39)
 - SSN_full is most likely to be missing at 82.15%, financial info is missing at 64%.03, and insurance policy info, name, and address are all missing at between 21%-26%.
@@ -91,7 +94,8 @@ FROM claims
 ```
 #### Step 2: Are there patterns in the missing data? 
 ![Q4b](https://github.com/user-attachments/assets/93bdf515-b231-41b9-b3c9-68ae6bfafe57)
-- Filtering to rows where ssn_full is NULL, insurance_policy_number shows the highest co-missingness, meaning those two fields are most often absent together in the same claim record. This suggests they behave like a linked “coverage identity” bundle in the export, where records that omit SSN also tend to omit the policy identifier rather than dropping only one of the two fields. In a real breach, that tandem missingness would be a useful clue about the source system or extraction workflow, because it can indicate whether the leak came from a billing feed that strips member identifiers or from a dataset that was partially redacted before release.
+- Filtering to rows where ssn_full is NULL, insurance_policy_number shows the highest co-missingness, meaning those two fields are most often absent together in the same claim record. This suggests they behave like a linked “coverage identity” bundle in the export, where records that omit SSN also tend to omit the policy identifier rather than dropping only one of the two fields.
+- In a real breach, that tandem missingness would be a useful clue about the source system or extraction workflow, because it can indicate whether the leak came from a billing feed that strips member identifiers or from a dataset that was partially redacted before release.
 ```
 SELECT  COUNT(*) AS total_rows_ssn_full_null,
 TO_CHAR(ROUND(100*(COUNT(*) FILTER(WHERE name IS NULL) / COUNT(*)::numeric),2),'999D99%') as pcnt_name_missing,
@@ -108,8 +112,13 @@ The results are statistically insignificant for two reasons:
    
 In a real breach dataset, this check matters because correlated missingness often points to specific extraction workflows or masking failures, which changes exposure severity, identity theft risk, and who needs to be notified.
 
-#### 5. What share of affected individuals are in NY vs out-of-state,
+#### 5. What share of affected individuals are in NY vs out-of-state
 ![Q5](https://github.com/user-attachments/assets/c5f10d91-6dba-4e37-8a06-38df2b954d8d)
+- BACKGROUND: Being a New York City based hospital, its expected that the majority of patients live in NY state. Though, there are many states closely bordering NYC so a large sum of patients could potentially be from out of state. Its important to understand the geological scale when a breach occurs because states may have different requirements for notification processses and guidelines.
+- 38,722 patients reside in NY.
+- Neighboring states have higher patient counts with 2,438 from New Jersey, 2,285 from Massachusettes, and 1,646 from PA, with a steep dropoff after that.
+- There are 27 distinct states in this dataset.
+- TECHNICAL NOTE: Many patient records dont inlcude an entry in the `state` field. After grouping all distinct patient records to determine a state, still 2,454 patients have no state listed.
 ```
 SELECT patient_state, count(affected_flag) as patient_count
 FROM (SELECT
