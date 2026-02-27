@@ -2,6 +2,9 @@
 
 ### 1) What percentage of breached records included highly sensitive fields like Social Security Numbers or financial data?
 ![Q1](https://github.com/user-attachments/assets/aaecad39-b7fc-4e64-a0d0-e6e030c71ee9)
+- TECHNICAL POINT:
+- SOME BACKGROUND: Sensitive fields considered were ssn_full, card_number (with cvv and exp_date), and insurance_policy_number.
+- EXPLANATION OF CHART: Insurance policy numbers were present in 36.61% of all records with financial info closely behind at 35.97%. Full social security numbers leaked at a 17.86% rate.
 ```
 SELECT COUNT(*) AS total_records,
 		TO_CHAR(ROUND(100*(COUNT(*) FILTER(WHERE ssn_full <> '') / COUNT(*)::numeric),2),'999D99%') AS has_full_ssn,
@@ -12,6 +15,14 @@ FROM claims
 
 ### 2) How many affected individuals have enough exposed information to pose a serious identity theft risk vs low risk exposure vs no exposure
 ![Q3](https://github.com/user-attachments/assets/a432a1fe-9888-4a77-9b03-66855e2487df)
+- TECHNICAL POINT: Created risk buckets using case function and counted distinct patient IDs when their records met certain risk criteria.
+- EXPLANATION OF CHART: A significant amount of patients at nearly 44K out of 50K have enough information across all their leaked records to consistitute a serious threat of identity theft or fraud. Almost 5K patients had enough exposed to warrant a slight risk while only 1K experienced no real threat risk.
+
+Risk was determined as the presence of any one of the following: 
+- High-risk: `ssn_full`, `card_number`, `insurance_policy_number`+`name`
+- Low-risk: `ssn_last4`+`date_of_birth`, `insurance_policy_number`+`name`, `date_of_birth`+`name`
+- No risk: any other combination of fields for instance `phone number`, `address`, `total_charge`, etc
+
 ```
 SELECT  COUNT(*) as count,
 	CASE risk_factor 
