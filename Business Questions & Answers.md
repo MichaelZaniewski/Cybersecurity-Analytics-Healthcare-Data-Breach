@@ -97,9 +97,6 @@ The results are statistically insignificant for two reasons:
    
 In a real breach dataset, this check matters because correlated missingness often points to specific extraction workflows or masking failures, which changes exposure severity, identity theft risk, and who needs to be notified.
 
-
-What share of affected individuals are in-state vs out-of-state
-
 #### 5. What share of affected individuals are in NY vs out-of-state,
 ![Q5](https://github.com/user-attachments/assets/c5f10d91-6dba-4e37-8a06-38df2b954d8d)
 ```
