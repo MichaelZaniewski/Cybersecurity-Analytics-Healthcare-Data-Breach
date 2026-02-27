@@ -1,7 +1,7 @@
 # Business Questions & SQL Query Results
 
 1) What percentage of breached records included highly sensitive fields like Social Security Numbers or financial data?
-![Q1]()
+![Q1](https://github.com/user-attachments/assets/aaecad39-b7fc-4e64-a0d0-e6e030c71ee9)
 ```
 SELECT COUNT(*) AS total_records,
 		TO_CHAR(ROUND(100*(COUNT(*) FILTER(WHERE ssn_full <> '') / COUNT(*)::numeric),2),'999D99%') AS has_full_ssn,
@@ -50,7 +50,7 @@ ORDER BY count DESC
 
 ```
 5) What proportion of records are incomplete to the point where patient notification would be difficult?
-![Q5]()
+![Q5](https://github.com/user-attachments/assets/8855d402-a01e-420d-806c-737f0685b0f3)
 ```
 SELECT 
 	CASE address_flag 
