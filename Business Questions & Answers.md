@@ -45,7 +45,13 @@ GROUP BY risk_factor
 ORDER BY count DESC
 ```
 ### 4) Are there patterns in the types of data that are more likely to be missing?
-![Q4]()
+
+#### Step 1: Which type of data is more likely to be missing?
+![Q4a]()
+```
+
+```
+![Q4b]()
 ```
 
 ```
