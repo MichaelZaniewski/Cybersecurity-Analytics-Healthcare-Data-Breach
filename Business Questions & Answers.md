@@ -9,12 +9,8 @@ SELECT COUNT(*) AS total_records,
 		TO_CHAR(ROUND(100*(COUNT(*) FILTER(WHERE name <> '' AND date_of_birth IS NOT NULL AND insurance_policy_number <> '') / COUNT(*)::numeric),2),'999D99%') AS has_insurance_info
 FROM claims
 ```
-### 2) Are certain types of PII (e.g., name, address) more frequently exposed together?
-![Q2]()
-```
 
-```
-### 3) How many affected individuals have enough exposed information to pose a serious identity theft risk vs low risk exposure vs no exposure
+### 2) How many affected individuals have enough exposed information to pose a serious identity theft risk vs low risk exposure vs no exposure
 ![Q3](https://github.com/user-attachments/assets/a432a1fe-9888-4a77-9b03-66855e2487df)
 ```
 SELECT  COUNT(*) as count,
@@ -44,6 +40,29 @@ FROM
 GROUP BY risk_factor
 ORDER BY count DESC
 ```
+
+### 3) What proportion of records are incomplete to the point where patient notification would be difficult?
+![Q5](https://github.com/user-attachments/assets/8855d402-a01e-420d-806c-737f0685b0f3)
+```
+SELECT 
+	CASE address_flag 
+		WHEN 1 THEN 'easy'
+		ELSE 'difficult'
+		END AS contact_feasability, COUNT(*) AS patient_count
+		
+FROM
+	(SELECT  
+	patient_id,
+	MAX(CASE 
+		WHEN address IS NOT NULL AND name IS NOT NULL then 1
+		ELSE 0
+		END) AS address_flag
+	FROM claims
+	GROUP BY patient_id)
+	GROUP BY contact_feasability
+	ORDER BY patient_count DESC
+```
+
 ### 4) Are there patterns in the types of data that are more likely to be missing?
 
 #### Step 1: Which type of data is more likely to be missing?
@@ -77,24 +96,28 @@ The results are statistically insignificant for two reasons:
 2) The Python nulling logic applies most other fields independently of SSN status, so conditional missingness rates stay close to the overall rates.
    
 In a real breach dataset, this check matters because correlated missingness often points to specific extraction workflows or masking failures, which changes exposure severity, identity theft risk, and who needs to be notified.
-### 5) What proportion of records are incomplete to the point where patient notification would be difficult?
-![Q5](https://github.com/user-attachments/assets/8855d402-a01e-420d-806c-737f0685b0f3)
+
+
+What share of affected individuals are in-state vs out-of-state
+
+#### 5. What share of affected individuals are in NY vs out-of-state,
+![Q5](https://github.com/user-attachments/assets/c5f10d91-6dba-4e37-8a06-38df2b954d8d)
 ```
-SELECT 
-	CASE address_flag 
-		WHEN 1 THEN 'easy'
-		ELSE 'difficult'
-		END AS contact_feasability, COUNT(*) AS patient_count
-		
-FROM
-	(SELECT  
-	patient_id,
+SELECT patient_state, count(affected_flag) as patient_count
+FROM (SELECT
+	patient_id, COALESCE(MAX(state) FILTER(WHERE state IS NOT NULL), 'no_state_listed') as patient_state,
 	MAX(CASE 
-		WHEN address IS NOT NULL AND name IS NOT NULL then 1
+		WHEN SSN_full IS NOT NULL
+		OR insurance_policy_number IS NOT NULL
+		OR (name IS NOT NULL AND date_of_birth IS NOT NULL)
+		OR card_number IS NOT NULL
+		THEN 1
 		ELSE 0
-		END) AS address_flag
+		END) AS affected_flag
 	FROM claims
-	GROUP BY patient_id)
-	GROUP BY contact_feasability
-	ORDER BY patient_count DESC
+	GROUP BY patient_id
+	ORDER BY patient_id ASC)
+WHERE affected_flag = 1
+GROUP BY patient_state
+ORDER BY patient_count DESC
 ```
