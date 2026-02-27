@@ -1,6 +1,6 @@
 # Business Questions & SQL Query Results
 
-1) What percentage of breached records included highly sensitive fields like Social Security Numbers or financial data?
+### 1) What percentage of breached records included highly sensitive fields like Social Security Numbers or financial data?
 ![Q1](https://github.com/user-attachments/assets/aaecad39-b7fc-4e64-a0d0-e6e030c71ee9)
 ```
 SELECT COUNT(*) AS total_records,
@@ -9,12 +9,12 @@ SELECT COUNT(*) AS total_records,
 		TO_CHAR(ROUND(100*(COUNT(*) FILTER(WHERE name <> '' AND date_of_birth IS NOT NULL AND insurance_policy_number <> '') / COUNT(*)::numeric),2),'999D99%') AS has_insurance_info
 FROM claims
 ```
-2) Are certain types of PII (e.g., name, address) more frequently exposed together?
+### 2) Are certain types of PII (e.g., name, address) more frequently exposed together?
 ![Q2]()
 ```
 
 ```
-3) How many affected individuals have enough exposed information to pose a serious identity theft risk vs low risk exposure vs no exposure
+### 3) How many affected individuals have enough exposed information to pose a serious identity theft risk vs low risk exposure vs no exposure
 ![Q3](https://github.com/user-attachments/assets/a432a1fe-9888-4a77-9b03-66855e2487df)
 ```
 SELECT  COUNT(*) as count,
@@ -44,12 +44,12 @@ FROM
 GROUP BY risk_factor
 ORDER BY count DESC
 ```
-4) Are there patterns in the types of data that are more likely to be missing?
+### 4) Are there patterns in the types of data that are more likely to be missing?
 ![Q4]()
 ```
 
 ```
-5) What proportion of records are incomplete to the point where patient notification would be difficult?
+### 5) What proportion of records are incomplete to the point where patient notification would be difficult?
 ![Q5](https://github.com/user-attachments/assets/8855d402-a01e-420d-806c-737f0685b0f3)
 ```
 SELECT 
