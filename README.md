@@ -46,12 +46,14 @@ This project utilizes version 2.0 of my [Healthcare Dataset Generator](https://g
 
 ## Executive Summary
 ### Overview of Findings
-This analysis points to a breach shaped like a fragmented claims or revenue-cycle export. The exposed records contain a mix of billing, coverage, and identity-related fields, while missingness remains uneven across the dataset. That combination matters because it suggests an operational workflow leak tied to payer and billing activity, rather than a simple demographic file or a clean full-table dump.
+This analysis points to a breach shaped like a fragmented claims or revenue-cycle export. The exposed records contain a mix of billing, coverage, and identity-related fields, while missingness remains uneven across the dataset. The combination suggests an operational workflow leak tied to payer and billing activity, rather than a simple demographic file or a clean full-table dump.
 
-The results also show that the incident would create two immediate response priorities. Most affected patients fall into the highest risk tier under the project’s exposure rules, which means the leaked field combinations are serious enough to support identity theft or fraud concerns. At the same time, patient notification remains broadly feasible for most of the affected population, even though the underlying records are incomplete and inconsistent at the row level. 
+The results also show that the incident would create two immediate response priorities:
+
+1) Most affected patients fall into the highest risk tier under the project’s exposure rules, which means the leaked field combinations are serious enough to support identity theft or fraud concerns.
+2) At the same time, patient notification remains broadly feasible for most of the affected population, even though the underlying records are incomplete and inconsistent at the row level. 
 
 Geographically, the breach appears concentrated around the hospital’s home market but still extends well beyond it. That pattern fits the project’s single-hospital design and shows how a local operational breach can still create a multi-state response burden. From a business perspective, the dataset reflects an incident where severity assessment, notification readiness, and jurisdictional reach would all need to be evaluated together.
-
 
 ### Findings
 - **High patient-level risk concentration:** Nearly 44,000 of 50,000 patients have enough exposed information across their records to be classified as high risk for identity theft or fraud. Almost 5,000 are low risk, and only about 1,000 fall into a no-risk bucket.
@@ -60,25 +62,24 @@ Geographically, the breach appears concentrated around the hospital’s home mar
 - **The breach looks fragmented, not complete:** ssn_full is missing in 82.15% of rows and financial information is missing in 64.03%, which supports the project assumption (and design) that the breach resembles a partial claims export rather than a full structured database dump.
 - **The impact is regionally concentrated but multi-state:** 38,722 affected patients are in New York, but the breach still spans 27 states, with the largest out-of-state counts in New Jersey, Massachusetts, and Pennsylvania
 
-
 ## Recommendations
 
-
-
-
-### EXTRA CATEGORY WRAP-UP
-
-#### CATEGORY Explanation
-
+- **Prioritize response by exposure severity:** Patients in the high-risk bucket should be triaged first for notification and follow-up because their records contain the combinations of fields most associated with identity theft and fraud risk.
+- **Split outreach by notification readiness:** Records with complete `name` and `address` information can move directly into a standard notification workflow, while incomplete records should be routed to a separate remediation process.
+- **Plan for a multi-state response footprint:** Although the breach is concentrated locally, the affected population spans multiple states, which would increase the coordination burden for notification and compliance handling.
 
 
 ## Assumptions, Limitations, and Caveats
 ### Assumptions
-
+- The breach is modeled as a claims and revenue-cycle export, not a full database dump. Exposure is only counted when a record contains at least one qualifying sensitive data element beyond basic identifiers, and patient-level risk is based on the highest-risk row tied to that patient.
+- The source organization is assumed to be a single hypothetical NYC-based hospital with a mostly local patient population and a smaller out-of-state tail. Notification readiness is evaluated primarily around likely mail contactability using preserved name and address fields.
+  
 ### Limitations
-- Synthetic data, despite realistic rules, may not capture true clinical variation like seasonal spikes. Real‑world behavior (patients, providers, payers) can differ.
-### Caveats
+- Synthetic data, despite realistic rules, may not capture true clinical variation like seasonal spikes. Real-world behavior from patients, providers, and payers can differ.
+- The dataset’s missingness patterns are generated by project rules, not by an actual breached system, and the risk tiers are a project-defined analytical framework rather than a legal or regulatory standard.
 
+### Caveats
+- This project measures exposure potential and breach-response implications, not confirmed fraud, financial loss, or forensic root cause. Similar co-missingness percentages should also be interpreted carefully because ssn_full is missing in most rows, which limits how much the filtered population differs from the full dataset.
 
 ## Glossary
 - **Data Element:** A discrete unit of sensitive information used in breach review to determine exposure severity (example: insurance policy number, SSN fields, payment card fields). In this project, exposure is only counted when at least one qualifying data element is present beyond basic identifiers like name and address.
