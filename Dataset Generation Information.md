@@ -494,6 +494,7 @@ if __name__ == "__main__":
 ```
 
 ## SQL Create Table Code
+Code used to create the table in SQL before data import
 ```
 CREATE TABLE public.claims (
   billing_id                   INTEGER PRIMARY KEY,
