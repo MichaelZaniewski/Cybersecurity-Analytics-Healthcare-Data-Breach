@@ -48,6 +48,12 @@ This project utilizes version 2.0 of my [Healthcare Dataset Generator](https://g
 ### Overview of Findings
 
 ### Findings
+- **High patient-level risk concentration:** Nearly 44,000 of 50,000 patients have enough exposed information across their records to be classified as high risk for identity theft or fraud. Almost 5,000 are low risk, and only about 1,000 fall into a no-risk bucket.
+- **Sensitive fields are common in the leak:** Insurance-related data appears in 36.61% of records, financial information in 35.97%, and full Social Security numbers in 17.86%.
+- **Most patients are still contactable:** 44,077 patients meet the project’s notification readiness standard, while 5,923 have records incomplete enough to make postal notification difficult.
+- **The breach looks fragmented, not complete:** ssn_full is missing in 82.15% of rows and financial information is missing in 64.03%, which supports the project assumption (and design) that the breach resembles a partial claims export rather than a full structured database dump.
+- **The impact is regionally concentrated but multi-state:** 38,722 affected patients are in New York, but the breach still spans 27 states, with the largest out-of-state counts in New Jersey, Massachusetts, and Pennsylvania
+
 
 ## Recommendations
 
