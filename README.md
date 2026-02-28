@@ -46,6 +46,12 @@ This project utilizes version 2.0 of my [Healthcare Dataset Generator](https://g
 
 ## Executive Summary
 ### Overview of Findings
+This analysis points to a breach shaped like a fragmented claims or revenue-cycle export. The exposed records contain a mix of billing, coverage, and identity-related fields, while missingness remains uneven across the dataset. That combination matters because it suggests an operational workflow leak tied to payer and billing activity, rather than a simple demographic file or a clean full-table dump.
+
+The results also show that the incident would create two immediate response priorities. Most affected patients fall into the highest risk tier under the project’s exposure rules, which means the leaked field combinations are serious enough to support identity theft or fraud concerns. At the same time, patient notification remains broadly feasible for most of the affected population, even though the underlying records are incomplete and inconsistent at the row level. 
+
+Geographically, the breach appears concentrated around the hospital’s home market but still extends well beyond it. That pattern fits the project’s single-hospital design and shows how a local operational breach can still create a multi-state response burden. From a business perspective, the dataset reflects an incident where severity assessment, notification readiness, and jurisdictional reach would all need to be evaluated together.
+
 
 ### Findings
 - **High patient-level risk concentration:** Nearly 44,000 of 50,000 patients have enough exposed information across their records to be classified as high risk for identity theft or fraud. Almost 5,000 are low risk, and only about 1,000 fall into a no-risk bucket.
